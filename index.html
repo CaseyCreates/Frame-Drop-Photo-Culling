@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,56 +17,58 @@
       <span>Deleted: <b id="stat-del">0</b></span>
       <span>Remaining: <b id="stat-rem">0</b></span>
     </div>
+    <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+      <i class="ti ti-moon" id="theme-icon"></i>
+    </button>
   </div>
 
   <div id="main">
     <div id="card-area">
+
       <div id="drop-zone">
-        <i class="ti ti-camera" aria-hidden="true"></i>
+        <i class="ti ti-camera dz-icon"></i>
         <h3>Drop your shoot here</h3>
-        <p>Drag & drop images or a whole folder.<br>JPG · PNG · WEBP · HEIC · RAW</p>
+        <p>Drag &amp; drop images or a whole folder.<br>JPG · PNG · WEBP · HEIC · RAW</p>
         <button class="browse-btn" onclick="document.getElementById('file-input').click()">
-          <i class="ti ti-upload" aria-hidden="true" style="font-size:14px;vertical-align:-2px;margin-right:5px;"></i>
-          Browse files
+          <i class="ti ti-upload"></i> Browse files
         </button>
         <input type="file" id="file-input" accept="image/*" multiple />
       </div>
 
       <div id="card-stack">
+
         <div id="done-screen">
-          <i class="ti ti-circle-check done-icon" aria-hidden="true"></i>
+          <i class="ti ti-circle-check done-icon"></i>
           <h2>Session complete</h2>
           <p id="done-summary"></p>
           <div class="done-actions">
             <button class="sb-btn green" onclick="downloadAllKept()">
-              <i class="ti ti-download" aria-hidden="true" style="font-size:15px;"></i>
-              Download all kept photos
+              <i class="ti ti-download"></i> Download all kept (zip)
             </button>
             <button class="sb-btn red" onclick="exportDeleteList()">
-              <i class="ti ti-file-download" aria-hidden="true" style="font-size:15px;"></i>
-              Export delete list (.txt)
+              <i class="ti ti-file-download"></i> Export delete list (.txt)
             </button>
             <div class="tooltip-wrap">
-              <button class="sb-btn" onclick="toggleTooltip('done-tt')" style="justify-content:space-between;">
+              <button class="sb-btn" style="justify-content:space-between;" onclick="toggleTooltip('done-tt')">
                 <span style="display:flex;align-items:center;gap:6px;">
-                  <i class="ti ti-terminal" aria-hidden="true" style="font-size:15px;"></i>
-                  Export shell script
+                  <i class="ti ti-terminal"></i> Shell script info
                 </span>
-                <i class="ti ti-info-circle" aria-hidden="true" style="font-size:14px;color:var(--accent-light);"></i>
+                <i class="ti ti-info-circle info-icon"></i>
               </button>
               <div class="tooltip-box" id="done-tt">
-                <button class="tclose" onclick="toggleTooltip('done-tt')" aria-label="Close">✕</button>
-                <strong style="color:var(--text);display:block;margin-bottom:6px;">What the shell script does</strong>
-                Downloads a <code>.sh</code> file. Open Terminal, <code>cd</code> into your photo folder, then run <code>bash framedrop-move-deleted.sh</code>. It creates a <code>FrameDrop_Deleted/</code> subfolder, moves every file you marked for deletion into it, and opens that folder automatically — so nothing is permanently erased until you decide to empty it.
+                <button class="tclose" onclick="toggleTooltip('done-tt')">✕</button>
+                <strong class="tt-title">What the shell script does</strong>
+                Downloads a <code>.sh</code> file. Open Terminal, <code>cd</code> into your photo
+                folder, then run <code>bash framedrop-move-deleted.sh</code>. It creates a
+                <code>FrameDrop_Deleted/</code> subfolder, moves every flagged file into it, and
+                opens that folder — nothing is permanently erased until you decide to empty it.
               </div>
-              <button class="sb-btn" onclick="exportShellScript()" style="margin-top:4px;">
-                <i class="ti ti-terminal" aria-hidden="true" style="font-size:15px;"></i>
-                Download script
+              <button class="sb-btn accent" onclick="exportShellScript()" style="margin-top:4px;">
+                <i class="ti ti-download"></i> Download shell script
               </button>
             </div>
             <button class="sb-btn" onclick="resetApp()">
-              <i class="ti ti-refresh" aria-hidden="true" style="font-size:15px;"></i>
-              Start over
+              <i class="ti ti-refresh"></i> Start over
             </button>
           </div>
         </div>
@@ -76,14 +78,14 @@
             <div class="bg-card" id="bg-card"></div>
             <div class="photo-card" id="photo-card">
               <span class="swipe-label label-keep" id="label-keep">KEEP</span>
-              <span class="swipe-label label-del" id="label-del">DELETE</span>
+              <span class="swipe-label label-del"  id="label-del">DELETE</span>
               <img id="card-img" src="" alt="Current photo" />
               <div class="card-meta">
                 <span class="card-filename" id="card-name"></span>
                 <span class="card-filesize" id="card-size"></span>
               </div>
             </div>
-            <div id="swipe-hint">drag or use buttons below</div>
+            <div id="swipe-hint">drag the card, or use the buttons below</div>
           </div>
 
           <div class="progress-wrap">
@@ -93,15 +95,13 @@
 
           <div id="actions">
             <button class="btn-main btn-del" onclick="doDelete()" aria-label="Delete photo">
-              <i class="ti ti-x" aria-hidden="true" style="font-size:18px;"></i>
-              Delete
+              <i class="ti ti-x"></i> Delete
             </button>
             <button class="btn-undo" onclick="undoLast()" title="Undo (Z)" aria-label="Undo">
-              <i class="ti ti-arrow-back-up" aria-hidden="true"></i>
+              <i class="ti ti-arrow-back-up"></i>
             </button>
             <button class="btn-main btn-keep" onclick="doKeep()" aria-label="Keep photo">
-              <i class="ti ti-check" aria-hidden="true" style="font-size:18px;"></i>
-              Keep
+              <i class="ti ti-check"></i> Keep
             </button>
           </div>
 
@@ -109,8 +109,8 @@
             <span><kbd>←</kbd> Delete</span>
             <span><kbd>Z</kbd> Undo</span>
             <span><kbd>→</kbd> Keep</span>
-    </div>
-    <!-- AI Analysis panel -->
+          </div>
+
           <div id="ai-panel">
             <div id="ai-panel-header" onclick="toggleAiPanel()">
               <h4>
@@ -118,7 +118,7 @@
                 AI Photo Analysis
                 <span class="ai-badge">BETA</span>
               </h4>
-              <button id="ai-panel-toggle" aria-label="Toggle analysis panel">
+              <button id="ai-panel-toggle" aria-label="Toggle analysis">
                 <i class="ti ti-chevron-up" id="ai-chevron"></i>
               </button>
             </div>
@@ -130,9 +130,9 @@
               <div id="ai-result" style="display:none;"></div>
             </div>
           </div>
-          </div>
         </div>
       </div>
+    </div>
 
     <div id="sidebar">
       <div class="tab-bar">
@@ -151,35 +151,53 @@
         <div class="empty-pile">Nothing here yet</div>
       </div>
 
+      <div class="pagination" id="del-pagination" style="display:none;">
+        <button class="pg-btn" id="del-pg-prev" onclick="changePage('del',-1)">
+          <i class="ti ti-chevron-left"></i>
+        </button>
+        <span class="pg-info" id="del-pg-info">Page 1 of 1</span>
+        <button class="pg-btn" id="del-pg-next" onclick="changePage('del',1)">
+          <i class="ti ti-chevron-right"></i>
+        </button>
+      </div>
+      <div class="pagination" id="keep-pagination" style="display:none;">
+        <button class="pg-btn" id="keep-pg-prev" onclick="changePage('keep',-1)">
+          <i class="ti ti-chevron-left"></i>
+        </button>
+        <span class="pg-info" id="keep-pg-info">Page 1 of 1</span>
+        <button class="pg-btn" id="keep-pg-next" onclick="changePage('keep',1)">
+          <i class="ti ti-chevron-right"></i>
+        </button>
+      </div>
+
       <div id="sidebar-footer">
-        <div id="del-footer" style="display:flex;flex-direction:column;gap:7px;">
+        <div id="del-footer">
           <button class="sb-btn red" onclick="exportDeleteList()" id="export-btn" style="display:none;">
-            <i class="ti ti-file-download" aria-hidden="true" style="font-size:14px;"></i>
-            Export delete list
+            <i class="ti ti-file-download"></i> Export delete list
           </button>
           <div class="tooltip-wrap" id="script-wrap" style="display:none;">
-            <button class="sb-btn" onclick="toggleTooltip('sb-tt')" style="justify-content:space-between;">
+            <button class="sb-btn" style="justify-content:space-between;" onclick="toggleTooltip('sb-tt')">
               <span style="display:flex;align-items:center;gap:6px;">
-                <i class="ti ti-terminal" aria-hidden="true" style="font-size:14px;"></i>
-                Shell script
+                <i class="ti ti-terminal"></i> Shell script
               </span>
-              <i class="ti ti-info-circle" aria-hidden="true" style="font-size:13px;color:var(--accent-light);"></i>
+              <i class="ti ti-info-circle info-icon"></i>
             </button>
             <div class="tooltip-box" id="sb-tt">
-              <button class="tclose" onclick="toggleTooltip('sb-tt')" aria-label="Close">✕</button>
-              <strong style="color:var(--text);display:block;margin-bottom:6px;">What this does</strong>
-              Downloads a <code>.sh</code> file. Open Terminal, <code>cd</code> into your photo folder, then run <code>bash framedrop-move-deleted.sh</code>. It creates a <code>FrameDrop_Deleted/</code> subfolder, moves every file you marked for deletion into it, and opens that folder automatically — nothing is permanently erased until you decide to empty it.
+              <button class="tclose" onclick="toggleTooltip('sb-tt')">✕</button>
+              <strong class="tt-title">What this does</strong>
+              Downloads a <code>.sh</code> file. Open Terminal, <code>cd</code> into your photo
+              folder, then run <code>bash framedrop-move-deleted.sh</code>. It creates a
+              <code>FrameDrop_Deleted/</code> subfolder, moves every flagged photo into it, and
+              opens that folder — nothing is permanently erased until you decide to empty it.
             </div>
             <button class="sb-btn accent" onclick="exportShellScript()" style="margin-top:4px;">
-              <i class="ti ti-download" aria-hidden="true" style="font-size:14px;"></i>
-              Download script
+              <i class="ti ti-download"></i> Download script
             </button>
           </div>
         </div>
-        <div id="keep-footer" style="display:none;flex-direction:column;gap:7px;">
+        <div id="keep-footer" style="display:none;">
           <button class="sb-btn green" onclick="downloadAllKept()" id="dl-all-btn" style="display:none;">
-            <i class="ti ti-download" aria-hidden="true" style="font-size:14px;"></i>
-            Download all kept
+            <i class="ti ti-download"></i> Download all kept (zip)
           </button>
         </div>
       </div>
@@ -187,242 +205,6 @@
   </div>
 </div>
 
-<script>
-let photos=[],idx=0,deleted=[],kept=[],history=[],activeTab='del',animating=false;
-
-const fi=document.getElementById('file-input');
-const dz=document.getElementById('drop-zone');
-const cs=document.getElementById('card-stack');
-const acw=document.getElementById('active-card-wrap');
-const ds=document.getElementById('done-screen');
-const card=document.getElementById('photo-card');
-const bgCard=document.getElementById('bg-card');
-const cardImg=document.getElementById('card-img');
-const cardName=document.getElementById('card-name');
-const cardSize=document.getElementById('card-size');
-const pFill=document.getElementById('progress-fill');
-const pText=document.getElementById('progress-text');
-const lKeep=document.getElementById('label-keep');
-const lDel=document.getElementById('label-del');
-const delList=document.getElementById('del-list');
-const keepList=document.getElementById('keep-list');
-const swipeHint=document.getElementById('swipe-hint');
-
-function fmt(b){if(b<1024)return b+'B';if(b<1048576)return Math.round(b/1024)+'KB';return (b/1048576).toFixed(1)+'MB';}
-
-function switchTab(t){
-  activeTab=t;
-  document.getElementById('tab-del').classList.toggle('active',t==='del');
-  document.getElementById('tab-keep').classList.toggle('active',t==='keep');
-  delList.classList.toggle('hidden',t!=='del');
-  keepList.classList.toggle('hidden',t!=='keep');
-  document.getElementById('del-footer').style.display=t==='del'?'flex':'none';
-  document.getElementById('keep-footer').style.display=t==='keep'?'flex':'none';
-}
-
-function toggleTooltip(id){
-  const el=document.getElementById(id);
-  el.classList.toggle('open');
-}
-
-fi.addEventListener('change',e=>loadFiles(Array.from(e.target.files)));
-dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag-over');});
-dz.addEventListener('dragleave',()=>dz.classList.remove('drag-over'));
-dz.addEventListener('drop',e=>{
-  e.preventDefault();dz.classList.remove('drag-over');
-  const files=Array.from(e.dataTransfer.files).filter(f=>f.type.startsWith('image/')||/\.(heic|raw|arw|cr2|nef|dng|orf|rw2)$/i.test(f.name));
-  if(files.length)loadFiles(files);
-});
-
-function loadFiles(files){
-  if(!files.length)return;
-  photos=files.map(f=>({file:f,url:URL.createObjectURL(f)}));
-  idx=0;deleted=[];kept=[];history=[];
-  delList.innerHTML='<div class="empty-pile">Nothing here yet</div>';
-  keepList.innerHTML='<div class="empty-pile">Nothing here yet</div>';
-  updateBadges();updateFooter();
-  dz.style.display='none';cs.style.display='block';
-  ds.style.display='none';acw.style.display='block';
-  showCard();
-}
-
-function showCard(){
-  if(idx>=photos.length){showDone();return;}
-  const {file,url}=photos[idx];
-  cardImg.src=url;cardName.textContent=file.name;cardSize.textContent=fmt(file.size);
-  lKeep.style.opacity=0;lDel.style.opacity=0;
-  updateProgress();resetDrag();
-  bgCard.style.transform='scale(0.94) translateY(14px)';
-  swipeHint.style.opacity=idx===0?'1':'0.5';
-}
-
-function updateProgress(){
-  const total=photos.length,done=idx;
-  pFill.style.width=(total?Math.round(done/total*100):0)+'%';
-  pText.textContent=done+' of '+total+' reviewed';
-  document.getElementById('stat-kept').textContent=kept.length;
-  document.getElementById('stat-del').textContent=deleted.length;
-  document.getElementById('stat-rem').textContent=total-done;
-}
-
-function updateBadges(){
-  document.getElementById('del-count').textContent=deleted.length;
-  document.getElementById('keep-count').textContent=kept.length;
-}
-
-function updateFooter(){
-  const hasDel=deleted.length>0,hasKeep=kept.length>0;
-  document.getElementById('export-btn').style.display=hasDel?'':'none';
-  document.getElementById('script-wrap').style.display=hasDel?'':'none';
-  document.getElementById('dl-all-btn').style.display=hasKeep?'':'none';
-}
-
-function addThumb(list,photo,type){
-  if(list.querySelector('.empty-pile'))list.innerHTML='';
-  const item=document.createElement('div');
-  item.className='pile-thumb';
-  const dl=type==='keep'?`<button class="dl-btn" onclick="dlOne('${photo.url}','${photo.file.name.replace(/'/g,"&#39;")}')"><i class="ti ti-download" aria-hidden="true"></i></button>`:'';
-  item.innerHTML=`<img src="${photo.url}" alt=""><span class="pile-thumb-name">${photo.file.name}</span>${dl}`;
-  list.prepend(item);
-}
-
-function animateSwipe(dir,cb){
-  if(animating)return;animating=true;
-  const cls=dir==='right'?'anim-fly-right':'anim-fly-left';
-  card.classList.add(cls);
-  bgCard.classList.add('anim-bounce-in');
-  setTimeout(()=>{
-    card.classList.remove(cls);
-    bgCard.classList.remove('anim-bounce-in');
-    bgCard.style.transform='scale(0.94) translateY(14px)';
-    animating=false;
-    cb();
-  },360);
-}
-
-function doKeep(){
-  if(idx>=photos.length||animating)return;
-  const photo=photos[idx];
-  lKeep.style.opacity=1;
-  animateSwipe('right',()=>{
-    history.push({action:'keep',photo,index:idx});
-    kept.push(photo);addThumb(keepList,photo,'keep');
-    idx++;updateBadges();updateFooter();showCard();
-  });
-}
-
-function doDelete(){
-  if(idx>=photos.length||animating)return;
-  const photo=photos[idx];
-  lDel.style.opacity=1;
-  animateSwipe('left',()=>{
-    history.push({action:'delete',photo,index:idx});
-    deleted.push(photo);addThumb(delList,photo,'del');
-    idx++;updateBadges();updateFooter();showCard();
-  });
-}
-
-function undoLast(){
-  if(!history.length||animating)return;
-  const last=history.pop();idx=last.index;
-  if(last.action==='delete'){
-    deleted.pop();
-    const t=delList.querySelectorAll('.pile-thumb');if(t.length)t[0].remove();
-    if(!delList.children.length)delList.innerHTML='<div class="empty-pile">Nothing here yet</div>';
-  } else {
-    kept.pop();
-    const t=keepList.querySelectorAll('.pile-thumb');if(t.length)t[0].remove();
-    if(!keepList.children.length)keepList.innerHTML='<div class="empty-pile">Nothing here yet</div>';
-  }
-  if(ds.style.display!=='none'){ds.style.display='none';acw.style.display='block';}
-  updateBadges();updateFooter();showCard();
-}
-
-function showDone(){
-  acw.style.display='none';ds.style.display='flex';
-  document.getElementById('done-summary').textContent='Kept '+kept.length+' photo'+(kept.length!==1?'s':'')+', marked '+deleted.length+' for deletion.';
-  updateProgress();
-}
-
-function dlOne(url,name){const a=document.createElement('a');a.href=url;a.download=name;a.click();}
-
-function downloadAllKept(){
-  if(!kept.length){return;}
-  kept.forEach((p,i)=>setTimeout(()=>dlOne(p.url,p.file.name),i*280));
-}
-
-function exportDeleteList(){
-  if(!deleted.length)return;
-  const c='# FrameDrop — photos marked for deletion\n# Generated: '+new Date().toLocaleString()+'\n\n'+deleted.map(p=>p.file.name).join('\n');
-  dlText(c,'framedrop-delete-list.txt');
-}
-
-function exportShellScript(){
-  if(!deleted.length)return;
-  let s='#!/bin/bash\n# FrameDrop — move deleted photos to subfolder\n# Usage: cd into your photo folder, then run: bash framedrop-move-deleted.sh\n# Generated: '+new Date().toLocaleString()+'\n\nDEST="./FrameDrop_Deleted"\nmkdir -p "$DEST"\n\n';
-  deleted.forEach(p=>{s+='mv "'+p.file.name.replace(/"/g,'\\"')+'" "$DEST/"\n';});
-  s+='\necho "Done — '+deleted.length+' photo(s) moved to $DEST"\nopen "$DEST" 2>/dev/null || xdg-open "$DEST" 2>/dev/null\n';
-  dlText(s,'framedrop-move-deleted.sh');
-}
-
-function dlText(c,n){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:'text/plain'}));a.download=n;a.click();}
-
-function resetApp(){
-  photos=[];idx=0;deleted=[];kept=[];history=[];animating=false;
-  dz.style.display='';cs.style.display='none';ds.style.display='none';acw.style.display='none';
-  delList.innerHTML='<div class="empty-pile">Nothing here yet</div>';
-  keepList.innerHTML='<div class="empty-pile">Nothing here yet</div>';
-  updateBadges();updateFooter();
-  ['stat-kept','stat-del','stat-rem'].forEach(id=>document.getElementById(id).textContent=0);
-  fi.value='';
-}
-
-let dragX=0,dragging=false,curX=0;
-function resetDrag(){card.style.transform='';card.style.transition='';lKeep.style.opacity=0;lDel.style.opacity=0;}
-
-card.addEventListener('mousedown',e=>{if(animating)return;dragging=true;dragX=e.clientX;card.style.transition='none';});
-document.addEventListener('mousemove',e=>{
-  if(!dragging)return;
-  curX=e.clientX-dragX;
-  const r=curX*0.08;
-  card.style.transform=`translateX(${curX}px) rotate(${r}deg)`;
-  lKeep.style.opacity=curX>40?Math.min(1,(curX-40)/60):0;
-  lDel.style.opacity=curX<-40?Math.min(1,(-curX-40)/60):0;
-  bgCard.style.transform=`scale(${0.94+Math.min(0.06,Math.abs(curX)/800)}) translateY(${14-Math.min(14,Math.abs(curX)/8)}px)`;
-});
-document.addEventListener('mouseup',()=>{
-  if(!dragging)return;dragging=false;
-  card.style.transition='transform 0.3s cubic-bezier(.4,0,.2,1)';
-  if(curX>110)doKeep();
-  else if(curX<-110)doDelete();
-  else{resetDrag();bgCard.style.transform='scale(0.94) translateY(14px)';}
-  curX=0;
-});
-
-card.addEventListener('touchstart',e=>{if(animating)return;dragX=e.touches[0].clientX;card.style.transition='none';},{passive:true});
-card.addEventListener('touchmove',e=>{
-  curX=e.touches[0].clientX-dragX;
-  const r=curX*0.08;
-  card.style.transform=`translateX(${curX}px) rotate(${r}deg)`;
-  lKeep.style.opacity=curX>40?Math.min(1,(curX-40)/60):0;
-  lDel.style.opacity=curX<-40?Math.min(1,(-curX-40)/60):0;
-  bgCard.style.transform=`scale(${0.94+Math.min(0.06,Math.abs(curX)/800)}) translateY(${14-Math.min(14,Math.abs(curX)/8)}px)`;
-},{passive:true});
-card.addEventListener('touchend',()=>{
-  card.style.transition='transform 0.3s cubic-bezier(.4,0,.2,1)';
-  if(curX>110)doKeep();
-  else if(curX<-110)doDelete();
-  else{resetDrag();bgCard.style.transform='scale(0.94) translateY(14px)';}
-  curX=0;
-});
-
-document.addEventListener('keydown',e=>{
-  if(e.key==='ArrowLeft')doDelete();
-  else if(e.key==='ArrowRight')doKeep();
-  else if(e.key==='z'||e.key==='Z')undoLast();
-});
-</script>
-<!-- Lightbox -->
 <div id="lightbox" onclick="closeLightbox()">
   <button id="lightbox-close" onclick="closeLightbox()" aria-label="Close">✕</button>
   <img id="lightbox-img" src="" alt="Full size preview" onclick="event.stopPropagation()">
