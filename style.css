@@ -249,7 +249,7 @@ kbd {
    AI ANALYSIS PANEL
 ════════════════════════════════ */
 #ai-panel {
-  display: none; margin-top: 16px; width: 100%; max-width: 420px;
+  margin-top: 16px; width: 100%; max-width: 420px;
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
 }
